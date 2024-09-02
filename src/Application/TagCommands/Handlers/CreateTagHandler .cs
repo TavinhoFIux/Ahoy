@@ -1,24 +1,23 @@
 ﻿using Application.TagCommands.Commands;
 using Domain.Entitys;
-using Infrastructure.Data;
+using Domain.Repositorys;
 using MediatR;
 
 namespace Application.TagCommands.Handlers
 {
     public class CreateTagHandler : IRequestHandler<CreateTagCommand, int>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Tag> _repositoryTag;
 
-        public CreateTagHandler(ApplicationDbContext context)
+        public CreateTagHandler(IRepository<Tag> repositoryTag)
         {
-            _context = context;
+            _repositoryTag = repositoryTag;
         }
 
         public async Task<int> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
             var tag = new Tag { Descricao = request.Descricao };
-            _context.Tag.Add(tag);
-            await _context.SaveChangesAsync(cancellationToken);
+            tag = await _repositoryTag.AddAsync(tag);
             return tag.Id;
         }
     }

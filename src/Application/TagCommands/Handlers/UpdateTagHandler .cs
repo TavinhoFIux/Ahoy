@@ -1,27 +1,27 @@
 ﻿using Application.TagCommands.Commands;
-using Infrastructure.Data;
+using Domain.Entitys;
+using Domain.Repositorys;
 using MediatR;
 
 namespace Application.TagCommands.Handlers
 {
     public class UpdateTagHandler : IRequestHandler<UpdateTagCommand, Unit>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Tag> _repositoryTag;
 
-        public UpdateTagHandler(ApplicationDbContext context)
+        public UpdateTagHandler(IRepository<Tag> repositoryTag)
         {
-            _context = context;
+            _repositoryTag = repositoryTag;
         }
 
         public async Task<Unit> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
         {
-            var tag = await _context.Tag.FindAsync(request.Id);
+            var tag = await _repositoryTag.GetByIdAsync(request.Id);
             if (tag == null)
                 throw new Exception("Tag não encontrada.");
 
             tag.Descricao = request.Descricao;
-            _context.Update(tag);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repositoryTag.UpdateAsync(tag);
             return Unit.Value;
         }
     }

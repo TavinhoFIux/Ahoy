@@ -19,26 +19,11 @@
             <td>
                 <a href="@Url.Action("Details", new { id = noticia.Id })">Detalhes</a> |
                 <a href="@Url.Action("Edit", new { id = noticia.Id })">Editar</a> |
-                <button class="btn btn-danger delete-button" data-id="@noticia.Id">Excluir</button>
+                    <form method="post" action="@Url.Action("Delete", new { Id = noticia.Id })" style="display:inline">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
+                    </form>
             </td>
         </tr>
     }
     </tbody>
 </table>
-
-@section Scripts {
-    <script>
-    $(document).ready(function () {
-        $(".delete-button").click(function () {
-            var id = $(this).data("id");
-            if (confirm("Confirma a exclusão da notícia?")) {
-                $.post('@Url.Action("DeleteConfirmed")', { id: id }, function (data) {
-                    location.reload();
-                }).fail(function () {
-                    alert("Erro ao excluir notícia.");
-                });
-            }
-        });
-    });
-    </script>
-}

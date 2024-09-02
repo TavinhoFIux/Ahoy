@@ -1,26 +1,26 @@
 ﻿using Application.TagCommands.Commands;
-using Infrastructure.Data;
+using Domain.Entitys;
+using Domain.Repositorys;
 using MediatR;
 
 namespace Application.TagCommands.Handlers
 {
     public class DeleteTagHandler : IRequestHandler<DeleteTagCommand, Unit>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Tag> _repositoryTag;
 
-        public DeleteTagHandler(ApplicationDbContext context)
+        public DeleteTagHandler(IRepository<Tag> repositoryTag)
         {
-            _context = context;
+            _repositoryTag = repositoryTag;
         }
 
         public async Task<Unit> Handle(DeleteTagCommand request, CancellationToken cancellationToken)
         {
-            var tag = await _context.Tag.FindAsync(request.Id);
+            var tag = await _repositoryTag.GetByIdAsync(request.Id);
             if (tag == null)
                 throw new Exception("Tag não encontrada.");
 
-            _context.Tag.Remove(tag);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repositoryTag.DeleteAsync(tag);
             return Unit.Value;
         }
     }

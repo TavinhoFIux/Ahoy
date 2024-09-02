@@ -1,23 +1,22 @@
 ﻿using Application.TagCommands.Query;
 using Domain.Entitys;
-using Infrastructure.Data;
+using Domain.Repositorys;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.TagCommands.Handlers
 {
-    public class GetAllTagsHandler : IRequestHandler<GetAllTagsQuery, List<Tag>>
+    public class GetAllTagsHandler : IRequestHandler<GetAllTagsQuery, IEnumerable<Tag>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Tag> _repositoryTag;
 
-        public GetAllTagsHandler(ApplicationDbContext context)
+        public GetAllTagsHandler(IRepository<Tag> repositoryTag)
         {
-            _context = context;
+            _repositoryTag = repositoryTag;
         }
 
-        public async Task<List<Tag>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Tag>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Tag.ToListAsync(cancellationToken);
+            return await _repositoryTag.GetAllAsync();
         }
     }
 }

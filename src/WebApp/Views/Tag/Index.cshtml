@@ -19,7 +19,7 @@
             <td>
                 <a href="@Url.Action("Details", new { Id = tag.Id })">View</a> |
                 <a href="@Url.Action("Edit", new { Id = tag.Id })">Edit</a> |
-                    <form method="post" action="@Url.Action("Delete", new { Id = tag.Id })" style="display:inline">
+                <form method="post" action="@Url.Action("Delete", new { Id = tag.Id })" style="display:inline">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
                 </form>
             </td>

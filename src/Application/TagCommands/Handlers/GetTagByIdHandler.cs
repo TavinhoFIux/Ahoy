@@ -1,22 +1,22 @@
 ﻿using Application.TagCommands.Query;
 using Domain.Entitys;
-using Infrastructure.Data;
+using Domain.Repositorys;
 using MediatR;
 
 namespace Application.TagCommands.Handlers
 {
     public class GetTagByIdHandler : IRequestHandler<GetTagByIdQuery, Tag>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Tag> _repositoryTag;
 
-        public GetTagByIdHandler(ApplicationDbContext context)
+        public GetTagByIdHandler(IRepository<Tag> repositoryTag)
         {
-            _context = context;
+            _repositoryTag = repositoryTag;
         }
 
         public async Task<Tag> Handle(GetTagByIdQuery request, CancellationToken cancellationToken)
         {
-            var tag = await _context.Tag.FindAsync(new object[] { request.Id }, cancellationToken);
+            var tag = await _repositoryTag.GetByIdAsync(request.Id);
             if (tag == null)
                 throw new Exception($"Tag com ID {request.Id} não encontrado.");
 

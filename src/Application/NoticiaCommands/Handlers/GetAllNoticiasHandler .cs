@@ -1,23 +1,22 @@
 ﻿using Application.NoticiaCommands.Query;
 using Domain.Entitys;
-using Infrastructure.Data;
+using Domain.Repositorys;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.NoticiaCommands.Handlers
 {
-    public class GetAllNoticiasHandler : IRequestHandler<GetAllNoticiasQuery, List<Noticia>>
+    public class GetAllNoticiasHandler : IRequestHandler<GetAllNoticiasQuery, IEnumerable<Noticia>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly INoticiaRepository _repositoryNoticia;
 
-        public GetAllNoticiasHandler(ApplicationDbContext context)
+        public GetAllNoticiasHandler(INoticiaRepository repositoryNoticia)
         {
-            _context = context;
+            _repositoryNoticia = repositoryNoticia;
         }
 
-        public async Task<List<Noticia>> Handle(GetAllNoticiasQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Noticia>> Handle(GetAllNoticiasQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Noticia.ToListAsync(cancellationToken);
+            return await _repositoryNoticia.GetAllAsync();
         }
     }
 }

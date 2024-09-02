@@ -62,7 +62,7 @@ namespace WebApp.Controllers
             return View(noticia);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

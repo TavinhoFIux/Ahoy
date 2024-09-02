@@ -7,9 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using FluentValidation;
-using Application.UsuarioCommands.Validations;
 using Application.TagCommands.Validations;
-using Application.NoticiaTagCommands.Validations;
 
 namespace Application
 {
@@ -35,15 +33,9 @@ namespace Application
             });
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssemblyContaining<CreateNoticiaCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<UpdateUserCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateTagCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateTagCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<CreateNoticiaTagCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<UpdateNoticiaTagCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<GetUsuarioByIdQueryValidator>();
             services.AddValidatorsFromAssemblyContaining<GetTagByIdQueryValidator>();
-            services.AddValidatorsFromAssemblyContaining<GetNoticiaTagByIdQueryValidator>();
             services.AddValidatorsFromAssemblyContaining<GetNoticiaByIdQueryValidator>();
 
             return services;

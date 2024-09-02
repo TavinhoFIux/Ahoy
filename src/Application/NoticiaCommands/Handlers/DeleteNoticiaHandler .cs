@@ -1,25 +1,24 @@
 ﻿using Application.NoticiaCommands.Commands;
-using Infrastructure.Data;
+using Domain.Repositorys;
 using MediatR;
 
 namespace Application.NoticiaCommands.Handlers
 {
     public class DeleteNoticiaHandler : IRequestHandler<DeleteNoticiaCommand, Unit>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly INoticiaRepository _repositoryNoticia;
 
-        public DeleteNoticiaHandler(ApplicationDbContext context)
+        public DeleteNoticiaHandler(INoticiaRepository repositoryNoticia)
         {
-            _context = context;
+            _repositoryNoticia = repositoryNoticia;
         }
 
         public async Task<Unit> Handle(DeleteNoticiaCommand request, CancellationToken cancellationToken)
         {
-            var noticia = await _context.Noticia.FindAsync(request.Id);
+            var noticia = await _repositoryNoticia.GetByIdAsync(request.Id);
             if (noticia == null) throw new Exception("Notícia não encontrada.");
 
-            _context.Noticia.Remove(noticia);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repositoryNoticia.DeleteAsync(noticia);
             return Unit.Value;
         }
     }
