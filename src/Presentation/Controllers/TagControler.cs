@@ -3,7 +3,7 @@ using Application.TagCommands.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace Presentation.Controllers
 {
 
     public class TagController : Controller

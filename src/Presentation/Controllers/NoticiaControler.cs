@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WebApp.Controllers
+namespace Presentation.Controllers
 {
     public class NoticiaController : Controller
     {

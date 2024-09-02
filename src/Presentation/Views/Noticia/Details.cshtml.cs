@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApp.Views.Noticia
+namespace Presentation.Views.Noticia
 {
     public class DetailsModel : PageModel
     {

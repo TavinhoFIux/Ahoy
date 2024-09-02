@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApp.Views.Noticia
+namespace Presentation.Views.Notice
 {
-    public class DeleteModel : PageModel
+    public class EditModel : PageModel
     {
         public void OnGet()
         {
