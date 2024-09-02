@@ -1,0 +1,43 @@
+﻿@using Application.NoticiaCommands.Commands
+
+@model UpdateNoticiaCommand
+
+<form id="noticiaForm">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Titulo" class="control-label"></label>
+        <input asp-for="Titulo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Texto" class="control-label"></label>
+        <textarea asp-for="Texto" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Tags:</label>
+        <select asp-for="TagIds" asp-items="ViewBag.Tags" class="form-control" multiple="multiple"></select>
+    </div>
+    <button type="submit" class="btn btn-success">Salvar</button>
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $("#noticiaForm").submit(function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: '@Url.Action("Edit", "Noticia")',
+                type: 'POST',
+                data: formData,
+                success: function (result) {
+                    window.location.href = '@Url.Action("Index")';
+                },
+                error: function () {
+                    alert("Houve um erro ao salvar a notícia.");
+                }
+            });
+        });
+    });
+    </script>
+}

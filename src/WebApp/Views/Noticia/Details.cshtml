@@ -1,0 +1,38 @@
+﻿@using Domain.Entitys
+@model Noticia
+
+@{
+    ViewData["Title"] = "Detalhes da Notícia";
+}
+
+<h1>@Model.Titulo</h1>
+
+<div>
+    <h2>Detalhes</h2>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Título:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Titulo
+        </dd>
+        <dt class="col-sm-2">
+            Texto:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Texto
+        </dd>
+        <dt class="col-sm-2">
+            Tags:
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var noticiaTag in Model.NoticiaTags)
+            {
+                <span class="badge bg-secondary">@noticiaTag.Tag.Descricao</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-default">Voltar para a lista</a>

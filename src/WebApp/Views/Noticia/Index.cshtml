@@ -1,0 +1,44 @@
+﻿@using Domain.Entitys
+
+@model IEnumerable<Noticia>
+
+<h2>Notícias</h2>
+<a href="@Url.Action("Create")" class="btn btn-primary">Adicionar Notícia</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var noticia in Model)
+    {
+        <tr>
+            <td>@noticia.Titulo</td>
+            <td>
+                <a href="@Url.Action("Details", new { id = noticia.Id })">Detalhes</a> |
+                <a href="@Url.Action("Edit", new { id = noticia.Id })">Editar</a> |
+                <button class="btn btn-danger delete-button" data-id="@noticia.Id">Excluir</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $(".delete-button").click(function () {
+            var id = $(this).data("id");
+            if (confirm("Confirma a exclusão da notícia?")) {
+                $.post('@Url.Action("DeleteConfirmed")', { id: id }, function (data) {
+                    location.reload();
+                }).fail(function () {
+                    alert("Erro ao excluir notícia.");
+                });
+            }
+        });
+    });
+    </script>
+}
