@@ -1,6 +1,7 @@
 ﻿using Application.TagCommands.Commands;
 using Domain.Entitys;
 using Domain.Repositorys;
+using FluentValidation;
 using MediatR;
 
 namespace Application.TagCommands.Handlers
@@ -16,6 +17,12 @@ namespace Application.TagCommands.Handlers
 
         public async Task<int> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = request.Validate();
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             var tag = new Tag(request.Descricao);
             tag = await _repositoryTag.AddAsync(tag);
             return tag.Id;

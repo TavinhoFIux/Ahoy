@@ -1,14 +1,16 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.TagCommands.Validations;
+using Application.Utils;
+using FluentValidation.Results;
 
 namespace Application.TagCommands.Commands
 {
-    public class CreateTagCommand : IRequest<int>
+    public class CreateTagCommand : Command<int>
     {
         public string Descricao { get; set; }
+
+        public override ValidationResult Validate()
+        {
+            return new CreateTagCommandValidator().Validate(this);
+        }
     }
 }

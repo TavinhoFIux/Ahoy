@@ -24,25 +24,3 @@
 </form>
 
 <a asp-action="Index" class="btn btn-default">Voltar à Lista</a>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $("#noticiaForm").submit(function (event) {
-                event.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    url: this.action,
-                    type: this.method,
-                    data: formData,
-                    success: function (result) {
-                        window.location.href = '@Url.Action("Index")';
-                    },
-                    error: function (xhr, status, error) {
-                        alert("Houve um erro ao salvar a notícia: " + xhr.responseText);
-                    }
-                });
-            });
-        });
-    </script>
-}

@@ -67,7 +67,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.Tags = new SelectList(await _mediator.Send(new GetAllTagsQuery()), "Id", "Descricao");
-            return View();
+            return PartialView("Create");
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -78,7 +78,7 @@ namespace Presentation.Controllers
                 return NotFound();
             }
             ViewBag.Tags = new SelectList(await _mediator.Send(new GetAllTagsQuery()), "Id", "Descricao", noticia.NoticiaTags.Select(nt => nt.TagId));
-            return View(new UpdateNoticiaCommand
+            return PartialView(new UpdateNoticiaCommand
             {
                 Id = noticia.Id,
                 Titulo = noticia.Titulo,

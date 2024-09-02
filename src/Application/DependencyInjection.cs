@@ -37,6 +37,7 @@ namespace Application
             services.AddValidatorsFromAssemblyContaining<UpdateTagCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<GetTagByIdQueryValidator>();
             services.AddValidatorsFromAssemblyContaining<GetNoticiaByIdQueryValidator>();
+            services.AddValidatorsFromAssemblyContaining<EditNoticiaCommandValidator>();
 
             return services;
         }

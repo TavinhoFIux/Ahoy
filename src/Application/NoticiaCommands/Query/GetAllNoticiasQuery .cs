@@ -1,9 +1,10 @@
-﻿using Domain.Entitys;
+﻿using Application.Utils;
+using Domain.Entitys;
 using MediatR;
 
 namespace Application.NoticiaCommands.Query
 {
-    public class GetAllNoticiasQuery : IRequest<IEnumerable<Noticia>>
+    public class GetAllNoticiasQuery : Command<IEnumerable<Noticia>>
     {
     }
 }

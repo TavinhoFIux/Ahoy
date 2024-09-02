@@ -1,6 +1,7 @@
 ﻿using Application.NoticiaCommands.Commands;
 using Domain.Entitys;
 using Domain.Repositorys;
+using FluentValidation;
 using MediatR;
 
 namespace Application.NoticiaCommands.Handlers
@@ -18,6 +19,12 @@ namespace Application.NoticiaCommands.Handlers
 
         public async Task<int> Handle(CreateNoticiaCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = request.Validate();
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             var usuario = await _repositoryUsuario.GetByIdAsync(1);
 
             if (usuario == null) 

@@ -7,7 +7,9 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<a href="@Url.Action("Create")" class="btn btn-primary mb-3">Adicionar Notícia</a>
+<button id="loadCreateForm" class="btn btn-primary mb-3">Adicionar Notícia</button>
+<div id="createFormContainer"></div>
+<div id="editFormContainer"></div>
 
 <table class="table table-hover">
     <thead>
@@ -23,8 +25,8 @@
                 <td>@noticia.Titulo</td>
                 <td>
                     <a href="@Url.Action("Details", new { id = noticia.Id })" class="btn btn-info btn-sm">Detalhes</a>
-                    <a href="@Url.Action("Edit", new { id = noticia.Id })" class="btn btn-secondary btn-sm">Editar</a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@noticia.Id', '@noticia.Titulo')">Delete</button>
+                    <a href="javascript:void(0);" class="btn btn-secondary btn-sm edit-btn" data-id="@noticia.Id">Editar</a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@noticia.Id', '@noticia.Titulo')">Excluir</button>
                 </td>
             </tr>
         }
@@ -32,13 +34,74 @@
 </table>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $('#loadCreateForm').click(function () {
+                loadForm('@Url.Action("Create", "Noticia")', '#createFormContainer');
+            });
+
+            $('.edit-btn').on('click', function () {
+                var id = $(this).data('id');
+                var url = '@Url.Action("Edit", "Noticia", new { id = -1 })'.replace('-1', id);
+                loadForm(url, '#editFormContainer');
+            });
+
+            function loadForm(url, container) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (result) {
+                        $(container).html(result);
+                        addFormValidation($(container).find('form'));
+                    },
+                    error: function (xhr) {
+                        alert("Erro ao carregar o formulário: " + xhr.statusText);
+                    }
+                });
+            }
+
+            function addFormValidation(form) {
+                form.on('submit', function (event) {
+                    if (!validateForm($(this))) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            function validateForm(form) {
+                var isValid = true;
+                form.find('.text-danger').empty();
+
+                var titulo = form.find('[name="Titulo"]').val().trim();
+                if (titulo === '') {
+                    form.find('[data-valmsg-for="Titulo"]').text('O título é obrigatório.');
+                    isValid = false;
+                }
+
+                var texto = form.find('[name="Texto"]').val().trim();
+                if (texto === '') {
+                    form.find('[data-valmsg-for="Texto"]').text('O texto é obrigatório.');
+                    isValid = false;
+                }
+
+                var tags = form.find('[name="TagIds"]').val();
+                if (!tags || tags.length === 0) {
+                    form.find('[data-valmsg-for="TagIds"]').text('Selecione pelo menos uma tag.');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+        });
+
+
         function confirmDelete(id, title) {
-            if (confirm('Are you sure you want to delete the notícia "' + title + '"?')) {
+            if (confirm('Você tem certeza que deseja excluir a notícia "' + title + '"?')) {
                 var form = document.createElement('form');
                 document.body.appendChild(form);
                 form.method = 'post';
-                form.action = '@Url.Action("Delete")';
+                form.action = '@Url.Action("Delete", "Noticia")';
                 var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'id';
