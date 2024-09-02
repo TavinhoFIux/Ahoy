@@ -30,13 +30,7 @@ namespace Infrastructure.Data
                 .WithMany(t => t.NoticiaTags)
                 .HasForeignKey(nt => nt.TagId);
 
-            modelBuilder.Entity<Usuario>().HasData(new Usuario
-            {
-                Id = 1,
-                Nome = "Admin",
-                Email = "admin@example.com",
-                Senha = "admin123"
-            });
+            modelBuilder.Entity<Usuario>().HasData(new Usuario("Admin", "admin@example.com", "admin123"));
 
             base.OnModelCreating(modelBuilder);
         }

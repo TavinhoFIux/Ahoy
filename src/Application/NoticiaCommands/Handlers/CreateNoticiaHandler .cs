@@ -25,7 +25,7 @@ namespace Application.NoticiaCommands.Handlers
                 throw new Exception("Não existe usuarios cadastrado na base de dados");
             }
 
-            var noticia = new Noticia { Titulo = request.Titulo, Texto = request.Texto, UsuarioId = usuario.Id };
+            var noticia = new Noticia(request.Titulo, request.Texto, usuario.Id);
 
             noticia = await _repositoryNoticia.AddNoticiaWithTagsAsync(noticia, request.TagIds);
 

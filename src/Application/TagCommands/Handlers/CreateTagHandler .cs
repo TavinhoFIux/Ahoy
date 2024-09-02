@@ -16,7 +16,7 @@ namespace Application.TagCommands.Handlers
 
         public async Task<int> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
-            var tag = new Tag { Descricao = request.Descricao };
+            var tag = new Tag(request.Descricao);
             tag = await _repositoryTag.AddAsync(tag);
             return tag.Id;
         }

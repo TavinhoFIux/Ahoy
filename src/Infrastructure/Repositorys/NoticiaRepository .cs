@@ -43,7 +43,7 @@ namespace Infrastructure.Repositorys
 
                 foreach (var tagId in tagIds)
                 {
-                    var noticiaTag = new NoticiaTag { NoticiaId = noticia.Id, TagId = tagId };
+                    var noticiaTag = new NoticiaTag(noticia.Id, tagId);
                     await _context.NoticiaTags.AddAsync(noticiaTag);
                 }
                 await _context.SaveChangesAsync();
@@ -68,8 +68,7 @@ namespace Infrastructure.Repositorys
                 if (noticia == null)
                     throw new Exception("Notícia não encontrada.");
 
-                noticia.Titulo = titulo;
-                noticia.Texto = texto;
+                noticia.Update(titulo, texto);
                 _context.Noticia.Update(noticia);
 
                 var existingTags = _context.NoticiaTags.Where(nt => nt.NoticiaId == noticia.Id).ToList();
@@ -77,7 +76,7 @@ namespace Infrastructure.Repositorys
 
                 foreach (var tagId in tagIds)
                 {
-                    var noticiaTag = new NoticiaTag { NoticiaId = noticia.Id, TagId = tagId };
+                    var noticiaTag = new NoticiaTag(noticia.Id, tagId);
                     _context.NoticiaTags.Add(noticiaTag);
                 }
 

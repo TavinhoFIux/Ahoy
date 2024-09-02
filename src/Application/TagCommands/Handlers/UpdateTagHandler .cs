@@ -20,7 +20,7 @@ namespace Application.TagCommands.Handlers
             if (tag == null)
                 throw new Exception("Tag não encontrada.");
 
-            tag.Descricao = request.Descricao;
+            tag.Update(request.Descricao);
             await _repositoryTag.UpdateAsync(tag);
             return Unit.Value;
         }
