@@ -45,12 +45,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateTagCommand command)
         {
-            if (ModelState.IsValid)
-            {
-                var tagId = await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(command);
+            var tagId = await _mediator.Send(command);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -76,13 +72,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
-            {
-                await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(command);
+ 
+            await _mediator.Send(command);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)

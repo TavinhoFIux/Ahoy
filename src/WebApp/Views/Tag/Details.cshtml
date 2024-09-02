@@ -2,16 +2,22 @@
 
 @model Tag
 
-<h2>Tag Details</h2>
+@{
+    ViewData["Title"] = "Detalhes da Tag";
+}
+
+<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Tag</h4>
+    <h4>Informações da Tag</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Description</dt>
-        <dd>@Model.Descricao</dd>
+    <dl class="row">
+        <dt class="col-sm-3">Descrição:</dt>
+        <dd class="col-sm-9">@Model.Descricao</dd>
     </dl>
 </div>
 
-<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-<a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a href="@Url.Action("Edit", new { id = @Model.Id })" class="btn btn-primary">Editar</a>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Voltar para a Lista</a>
+</div>

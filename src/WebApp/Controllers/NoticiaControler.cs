@@ -27,12 +27,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateNoticiaCommand command)
         {
-            if (ModelState.IsValid)
-            {
-                var noticiaId = await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(command);
+
+            var noticiaId = await _mediator.Send(command);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -44,12 +41,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(command);
+  
+            await _mediator.Send(command);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)

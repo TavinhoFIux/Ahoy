@@ -2,42 +2,53 @@
 
 @model UpdateNoticiaCommand
 
-<form id="noticiaForm">
+<h2>Editar Notícia</h2>
+
+<form id="noticiaForm" method="post" action="@Url.Action("Edit", "Noticia")">
+    @Html.AntiForgeryToken()
+
     <input type="hidden" asp-for="Id" />
+
     <div class="form-group">
-        <label asp-for="Titulo" class="control-label"></label>
+        <label asp-for="Titulo" class="control-label">Título:</label>
         <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Texto" class="control-label"></label>
+        <label asp-for="Texto" class="control-label">Texto:</label>
         <textarea asp-for="Texto" class="form-control"></textarea>
+        <span asp-validation-for="Texto" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label>Tags:</label>
+        <label asp-for="TagIds" class="control-label">Tags:</label>
         <select asp-for="TagIds" asp-items="ViewBag.Tags" class="form-control" multiple="multiple"></select>
     </div>
+
     <button type="submit" class="btn btn-success">Salvar</button>
-    @Html.AntiForgeryToken()
 </form>
+
+<a href="@Url.Action("Index", "Noticia")" class="btn btn-default">Voltar</a>
 
 @section Scripts {
     <script>
-    $(document).ready(function () {
-        $("#noticiaForm").submit(function (event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                url: '@Url.Action("Edit", "Noticia")',
-                type: 'POST',
-                data: formData,
-                success: function (result) {
-                    window.location.href = '@Url.Action("Index")';
-                },
-                error: function () {
-                    alert("Houve um erro ao salvar a notícia.");
-                }
+        $(document).ready(function () {
+            $("#noticiaForm").submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: formData,
+                    success: function (result) {
+                        window.location.href = '@Url.Action("Index")';
+                    },
+                    error: function (xhr) {
+                        alert("Houve um erro ao salvar a notícia: " + xhr.responseText);
+                    }
+                });
             });
         });
-    });
     </script>
 }

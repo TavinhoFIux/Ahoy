@@ -2,16 +2,44 @@
 
 @model UpdateTagCommand
 
-<h2>Edit Tag</h2>
+@{
+    ViewData["Title"] = "Editar Tag";
+}
 
-<form asp-action="Edit" method="post">
+<h2>@ViewData["Title"]</h2>
+
+<form id="editTagForm" method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        <label asp-for="Descricao" class="control-label"></label>
+        <label asp-for="Descricao" class="control-label">Descrição</label>
         <input asp-for="Descricao" class="form-control" />
         <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-success">Update</button>
+    <button type="submit" class="btn btn-success">Atualizar</button>
 </form>
 
-<a asp-action="Index">Back to List</a>
+<a href="@Url.Action("Index")" class="btn btn-secondary">Voltar para Lista</a>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#editTagForm").submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '@Url.Action("Edit", "Tag")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (result) {
+                        alert('Tag atualizada com sucesso!');
+                        window.location.href = '@Url.Action("Index")';
+                    },
+                    error: function (xhr) {
+                        alert('Erro ao atualizar tag: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -2,15 +2,45 @@
 
 @model CreateTagCommand
 
-<h2>Create Tag</h2>
+@{
+    ViewData["Title"] = "Criar Tag";
+}
 
-<form asp-action="Create" method="post">
+<h1>@ViewData["Title"]</h1>
+
+<form id="createTagForm" method="post">
+    @Html.AntiForgeryToken()
+
     <div class="form-group">
-        <label asp-for="Descricao" class="control-label"></label>
-        <input asp-for="Descricao" class="form-control" />
+        <label asp-for="Descricao" class="control-label">Descrição da Tag:</label>
+        <input asp-for="Descricao" class="form-control" placeholder="Insira a descrição da tag" />
         <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-success">Create</button>
+
+    <button type="submit" class="btn btn-success">Criar</button>
 </form>
 
-<a asp-action="Index">Back to List</a>
+<a href="@Url.Action("Index")" class="btn btn-secondary">Voltar para a Lista</a>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#createTagForm").submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '@Url.Action("Create", "Tag")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (result) {
+                        alert('Tag criada com sucesso!');
+                        window.location.href = '@Url.Action("Index")';
+                    },
+                    error: function (xhr) {
+                        alert('Erro ao criar tag: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

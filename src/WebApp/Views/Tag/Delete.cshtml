@@ -2,10 +2,19 @@
 
 @model Tag
 
-<h2>Delete Tag</h2>
+@{
+    ViewData["Title"] = "Excluir Tag";
+}
+
+<h1>@ViewData["Title"]</h1>
+
 <form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
+
     <input type="hidden" asp-for="Id" />
-    <p>Are you sure you want to delete @Model.Descricao?</p>
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-default">Cancel</a>
+
+    <p>Tem certeza de que deseja excluir a tag "@Model.Descricao"?</p>
+
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
 </form>

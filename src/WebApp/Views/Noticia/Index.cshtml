@@ -1,10 +1,15 @@
 ﻿@using Domain.Entitys
-
 @model IEnumerable<Noticia>
 
-<h2>Notícias</h2>
-<a href="@Url.Action("Create")" class="btn btn-primary">Adicionar Notícia</a>
-<table class="table">
+@{
+    ViewData["Title"] = "Lista de Notícias";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="@Url.Action("Create")" class="btn btn-primary mb-3">Adicionar Notícia</a>
+
+<table class="table table-hover">
     <thead>
         <tr>
             <th>Título</th>
@@ -12,18 +17,35 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var noticia in Model)
-    {
-        <tr>
-            <td>@noticia.Titulo</td>
-            <td>
-                <a href="@Url.Action("Details", new { id = noticia.Id })">Detalhes</a> |
-                <a href="@Url.Action("Edit", new { id = noticia.Id })">Editar</a> |
-                    <form method="post" action="@Url.Action("Delete", new { Id = noticia.Id })" style="display:inline">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                    </form>
-            </td>
-        </tr>
-    }
+        @foreach (var noticia in Model)
+        {
+            <tr>
+                <td>@noticia.Titulo</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = noticia.Id })" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="@Url.Action("Edit", new { id = noticia.Id })" class="btn btn-secondary btn-sm">Editar</a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@noticia.Id', '@noticia.Titulo')">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, title) {
+            if (confirm('Are you sure you want to delete the notícia "' + title + '"?')) {
+                var form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = 'post';
+                form.action = '@Url.Action("Delete")';
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = id;
+                form.appendChild(input);
+                form.submit();
+            }
+        }
+    </script>
+}

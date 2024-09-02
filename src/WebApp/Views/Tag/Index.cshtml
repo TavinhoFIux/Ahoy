@@ -2,9 +2,14 @@
 
 @model IEnumerable<Tag>
 
-<h2>Tags</h2>
-<a href="@Url.Action("Create")" class="btn btn-primary">Create New Tag</a>
-<table class="table">
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<h1>@ViewData["Title"]</h1>
+<a href="@Url.Action("Create")" class="btn btn-primary mb-3">Create New Tag</a>
+
+<table class="table table-hover">
     <thead>
         <tr>
             <th>Description</th>
@@ -12,18 +17,35 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var tag in Model)
-    {
-        <tr>
-            <td>@tag.Descricao</td>
-            <td>
-                <a href="@Url.Action("Details", new { Id = tag.Id })">View</a> |
-                <a href="@Url.Action("Edit", new { Id = tag.Id })">Edit</a> |
-                <form method="post" action="@Url.Action("Delete", new { Id = tag.Id })" style="display:inline">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                </form>
-            </td>
-        </tr>
-    }
+        @foreach (var tag in Model)
+        {
+            <tr>
+                <td>@tag.Descricao</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = tag.Id })" class="btn btn-info btn-sm">View</a>
+                    <a href="@Url.Action("Edit", new { id = tag.Id })" class="btn btn-secondary btn-sm">Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@tag.Id', '@tag.Descricao')">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, description) {
+            if (confirm('Are you sure you want to delete "' + description + '"?')) {
+                var form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = 'post';
+                form.action = '@Url.Action("Delete")';
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = id;
+                form.appendChild(input);
+                form.submit();
+            }
+        }
+    </script>
+}

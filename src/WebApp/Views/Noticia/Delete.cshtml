@@ -1,11 +1,14 @@
 ﻿@model Domain.Entitys.Noticia
 
-<h2>Delete Noticia</h2>
+@{
+    ViewData["Title"] = "Delete Notícia";
+}
 
-<p>Are you sure you want to delete the noticia titled "@Model.Titulo"?</p>
+<h2>@ViewData["Title"]</h2>
+<p>Are you sure you want to delete the notícia titled "@Model.Titulo"?</p>
 
-<form asp-action="DeleteConfirmed" method="post">
+<form asp-controller="Noticia" asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a asp-controller="Noticia" asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
